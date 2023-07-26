@@ -55,7 +55,8 @@ function meydaAnalyzers(sourceStream, command) {
       callback: (features) => {
         
         visualize(features);
-        audioLevels.innerHTML = features.rms;
+        console.log(features.amplitudeSpectrum); //float32 array
+        audioLevels.innerHTML = features.rms * 1000;
         spectralCentroid.textContent = features.spectralCentroid;
       },
     });
