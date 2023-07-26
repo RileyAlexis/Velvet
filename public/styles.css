@@ -26,3 +26,13 @@
     font-size: 24pt;
 }
 
+.micButtonOn {
+    background: greenyellow;
+    border: 2px solid black;
+}
+
+.micButtonOff {
+    background: lightgray;
+    border: 2px solid red;
+    
+}

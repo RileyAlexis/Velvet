@@ -1,46 +1,44 @@
 // import {updateDom, startAudioContext} from './public/client.js'
-import { visualize, showMic} from './visualize.js';
+import { visualize } from './visualize.js';
 import meyda from 'meyda'
 
 const audioContext = new AudioContext();
-let micActive = false;
+
+let rmsLevels = 0;
+
 // const source = audioContext.createMediaElementSource(audio);
 // const audioElement = document.querySelector('audio');
 
 recordButton.addEventListener('click', () => {
   if (audioContext.state === 'suspended') {
-      audioContext.resume();
-      callMic('on');
-  }
-  else if (micActive) callMic('off');
-  console.log('Mic Off');
+    audioContext.resume();
 
-},
-  false //Default value of event listener
-);
-
-
-
-function callMic(micSwitch) {
-  
-
-      navigator.mediaDevices.getUserMedia({ audio: true })
+    navigator.mediaDevices.getUserMedia({ audio: true })
       .then((stream) => {
         //Use the stream here
         const micStream = audioContext.createMediaStreamSource(stream);
 
-        //Connects mic to speakers and repeats whatever is said
         meydaAnalyzers(micStream, 'start');
-        micActive = true;
-        console.log('Microphone activated');
-
+        console.log('Microphone activated', micStream);
 
         //micStream.connect(audioContext.destination);
+        recordButton.classList.add('micButtonOn');
+        recordButton.classList.remove('micButtonOff');
       }).catch((err) => {
-        console.log('Microphone error')
-      });
-};
+        console.log('Microphone error');
+      }); //end of navigator function
+  } //End of if statement
 
+  //Suspend mic use after user button press
+  else if (audioContext.state !== 'suspended') {
+    audioContext.suspend();
+    console.log('Microphone suspended');
+    //meydaAnalyzers('', 'stop');
+    recordButton.classList.remove('micButtonOn');
+    recordButton.classList.add('micButtonOff');
+  }
+
+});
 
 //source.connect(audioContext.destination);
 
@@ -48,23 +46,21 @@ function meydaAnalyzers(sourceStream, command) {
 
   if (typeof meyda === "undefined") {
     console.log("Meyda could not be found! Have you included it?");
-  } else if (command === 'start') {
+  } else {
     const analyzer = meyda.createMeydaAnalyzer({
       audioContext: audioContext,
       source: sourceStream,
       bufferSize: 512,
-      featureExtractors: ["rms", "spectralCentroid"],
+      featureExtractors: ["rms", "amplitudeSpectrum", "spectralCentroid"],
       callback: (features) => {
-        //console.log(features);
-        // updateDom(features.rms, features.spectralCentroid);
-        audioLevels.textContext = features.rms;
+        
+        visualize(features);
+        audioLevels.innerHTML = features.rms;
         spectralCentroid.textContent = features.spectralCentroid;
       },
     });
     analyzer.start();
+    
     console.log('Starting Analyzer');
   }
-  else if (command === 'stop');
-  analyzer.pause();
-  console.log('Pausing Analyzer');
 }
