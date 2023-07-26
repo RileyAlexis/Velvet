@@ -5,12 +5,35 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
+    <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
-    <div id="app">
-      <audio src="./assets/song18.mp3" controls loop id="audio"></audio>
+    <div class="container">
+      <div id="headerDiv">
+        <p>Velvet Voice Audio Analysis</p>
+      </div>
+      <div id="waveform">
+        <canvas id="waveformCanvas"></canvas>
+      </div>
+      <div id="leftBottomDiv">
+        <input type="checkbox" id="showResonance" value="Show Resonance"/>
+      <label for="showResonance">Show Resonance</label>
+      <br>
+      Levels: <span id="audioLevels"></span>
+      <br>
+      Spectral Centroid: <span id="spectralCentroid"></span>
+      </div>
+      <div id="centerBottomDiv">
 
+        <button id="recordButton"><img src="./assets/mic.png"
+        width = 25 /></button>
+      </div>
+    
+      
+      
+      
     </div>
-    <script type="module" src="/main.js"></script>
+    <script type="module" src="./main.js"></script>
+    <!-- <script src="./client.js"></script> -->
   </body>
 </html>
