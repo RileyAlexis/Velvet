@@ -19,7 +19,7 @@ recordButton.addEventListener('click', () => {
         const micStream = audioContext.createMediaStreamSource(stream);
 
         meydaAnalyzers(micStream, 'start');
-        console.log('Microphone activated', micStream);
+        console.log('Microphone activated');
 
         //micStream.connect(audioContext.destination);
         recordButton.classList.add('micButtonOn');
@@ -33,7 +33,7 @@ recordButton.addEventListener('click', () => {
   else if (audioContext.state !== 'suspended') {
     audioContext.suspend();
     console.log('Microphone suspended');
-    //meydaAnalyzers('', 'stop');
+    meydaAnalyzers('', 'stop');
     recordButton.classList.remove('micButtonOn');
     recordButton.classList.add('micButtonOff');
   }
@@ -55,7 +55,7 @@ function meydaAnalyzers(sourceStream, command) {
       callback: (features) => {
         
         visualize(features);
-        console.log(features.amplitudeSpectrum); //float32 array
+        //console.log(features.amplitudeSpectrum); //float32 array
         audioLevels.innerHTML = features.rms * 1000;
         spectralCentroid.textContent = features.spectralCentroid;
       },
