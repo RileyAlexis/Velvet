@@ -1,6 +1,5 @@
-// import {updateDom, startAudioContext} from './public/client.js'
-import { visualize } from './visualize.js';
 import meyda from 'meyda'
+import { visualize } from './visualize.js';
 
 const audioContext = new AudioContext();
 
@@ -53,7 +52,7 @@ function meydaAnalyzers(sourceStream, command) {
       bufferSize: 512,
       featureExtractors: ["rms", "amplitudeSpectrum", "spectralCentroid"],
       callback: (features) => {
-        
+
         visualize(features);
         //console.log(features.amplitudeSpectrum); //float32 array
         audioLevels.innerHTML = features.rms * 1000;
@@ -61,7 +60,7 @@ function meydaAnalyzers(sourceStream, command) {
       },
     });
     analyzer.start();
-    
+
     console.log('Starting Analyzer');
   }
 }
